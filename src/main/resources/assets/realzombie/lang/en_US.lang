@@ -1,0 +1,5 @@
+entity.Crawler.name=Crawling Zombie
+entity.Walker.name=Zombie
+itemGroup.creativeRealZombie=RealZombie
+death.attack.bleedOut=%1$s lost too much blood
+death.attack.zombieInfection=%1$s became a zombie
