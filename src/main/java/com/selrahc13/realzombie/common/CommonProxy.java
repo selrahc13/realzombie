@@ -9,7 +9,12 @@ import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.biome.BiomeGenBase;
+
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingEvent;
 
@@ -62,13 +67,6 @@ public class CommonProxy {
   }
 
   public void serverStarted(FMLServerStartedEvent event) {
-    /*MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-    server.logInfo("Day Z " + DayZ.meta.version + " Loaded.");
-    if (Config.showWorldTypeWarning && !server.worldServers[0].getWorldInfo().getTerrainType().getWorldTypeName().equals("DAYZBASE") && !server.worldServers[0].getWorldInfo().getTerrainType().getWorldTypeName().equals("DAYZBASE")) {
-      server.logInfo("You have not generated a DayZ world! Make sure your server.properties has one of the following lines to generate a DayZ world:");
-      server.logInfo("level-type=DAYZBASE - To create the original DayZ world.");
-      server.logInfo("level-type=DAYZSNOW - To create snowy DayZ world.");
-    } */
   }
 
 
@@ -83,14 +81,17 @@ public class CommonProxy {
         event.entityLiving.attackEntityFrom(DamageType.bleedOut, 2);
       }
     }
+    // TODO: Do we want zombification to auto-expire?
     if (event.entityLiving.isPotionActive(Effect.zombification)) {
       if (event.entityLiving.getActivePotionEffect(Effect.zombification).getDuration() == 0) {
-        event.entityLiving.removePotionEffect(Effect.zombification.id);
+    	event.entityLiving.addPotionEffect(new PotionEffect(Effect.zombification.id, 3000, 10));
+        //event.entityLiving.removePotionEffect(Effect.zombification.id);
         return;
       }
       if (event.entityLiving.worldObj.rand.nextInt(100) == 0) {
         if (event.entityLiving.getHealth() > 1.0F) {
           event.entityLiving.attackEntityFrom(DamageType.zombieInfection, 1.0F);
+          event.entityLiving.addPotionEffect(new PotionEffect(Potion.hunger.id, 1800, 10));
         } else {
           EntityWalker var2 = new EntityWalker(event.entityLiving.worldObj);
           var2.setLocationAndAngles(event.entityLiving.posX, event.entityLiving.posY, event.entityLiving.posZ, event.entityLiving.rotationYaw, event.entityLiving.rotationPitch);
