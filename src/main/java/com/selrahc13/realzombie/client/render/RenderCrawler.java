@@ -7,6 +7,7 @@ import net.minecraft.util.ResourceLocation;
 
 import com.selrahc13.realzombie.RealZombie;
 import com.selrahc13.realzombie.common.entity.EntityCrawler;
+import com.selrahc13.realzombie.common.entity.EntityWalker;
 
 public class RenderCrawler extends RenderLiving {
   public RenderCrawler(ModelBase par1ModelBase, float shadowSize) {
@@ -24,7 +25,10 @@ public class RenderCrawler extends RenderLiving {
 
   @Override
   protected ResourceLocation getEntityTexture(Entity entity) {
-	  //TODO: Replace texture
-    return new ResourceLocation(RealZombie.meta.modId.toLowerCase() + ":textures/entities/crawler.png");
+	    if (entity instanceof EntityCrawler) {
+	        EntityCrawler zombie = (EntityCrawler)entity;
+	        return new ResourceLocation(RealZombie.meta.modId.toLowerCase() + ":textures/entities/" + zombie.texture);
+	      }
+	      return null;
   }
 }

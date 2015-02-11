@@ -29,8 +29,10 @@ import com.selrahc13.realzombie.common.effects.Effect;
 import com.selrahc13.realzombie.common.effects.EnactEffect;
 
 public class EntityCrawler extends EntityMob {
+	public String texture = "";
   public EntityCrawler(World world) {
     super(world);
+    texture = getRandomZombieTexture();
     setHealth(RealZombie.random(2, 14));
     float moveSpeed = RealZombie.random(1, 3) / 10f;
     getNavigator().setBreakDoors(true);
@@ -72,6 +74,10 @@ public class EntityCrawler extends EntityMob {
               }
           }
       }	  
+  }
+
+  private String getRandomZombieTexture() {
+	    return "crawler" + rand.nextInt(1) + ".png";
   }
 
   @Override
